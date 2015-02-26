@@ -133,5 +133,62 @@ static inline int bitvec_unset( bitvec_t *bv, BV_TYPE pos )
     return -1;
 }
 
+
+static inline int bitvec_set_range( bitvec_t *bv, BV_TYPE from, BV_TYPE to )
+{
+    if( bv->vec && to <= bv->nbit )
+    {
+        BV_TYPE *vec = bv->vec;
+        size_t start = from / BV_BIT;
+        size_t end = to / BV_BIT;
+        
+        if( start == end ){
+            vec[start] |= (~( (~(BV_TYPE)1) << ( to - from ) ) << from);
+        }
+        else {
+            size_t pos = start + 1;
+            
+            for(; pos < end; pos++ ){
+                vec[pos] |= ~(BV_TYPE)0;
+            }
+            vec[start] |= (~(BV_TYPE)0) << ( from % BV_BIT );
+            vec[end] |= ~((~(BV_TYPE)1) << ( to % BV_BIT ));
+        }
+        
+        return 0;
+    }
+    
+    return -1;
+}
+
+
+static inline int bitvec_unset_range( bitvec_t *bv, BV_TYPE from, BV_TYPE to )
+{
+    if( bv->vec && to <= bv->nbit )
+    {
+        BV_TYPE *vec = bv->vec;
+        size_t start = from / BV_BIT;
+        size_t end = to / BV_BIT;
+        
+        if( start == end ){
+            vec[start] &= ~(~( (~(BV_TYPE)1) << ( to - from ) ) << from);
+        }
+        else {
+            size_t pos = start + 1;
+            
+            for(; pos < end; pos++ ){
+                vec[pos] &= (BV_TYPE)0;
+            }
+            vec[start] &= ~((~(BV_TYPE)0) << ( from % BV_BIT ));
+            vec[end] &= ~(BV_TYPE)1 << ( to % BV_BIT );
+        }
+        
+        return 0;
+    }
+    
+    return -1;
+}
+
+
 #endif
 
