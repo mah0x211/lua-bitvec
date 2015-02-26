@@ -49,7 +49,7 @@ static inline int bitvec_init( bitvec_t *bv, size_t nbit )
 {
     bv->nbit = nbit;
     bv->nvec = BIT2VEC_SIZE( nbit );
-    if( ( bv->vec = calloc( sizeof( BV_TYPE ), bv->nvec ) ) ){
+    if( ( bv->vec = calloc( bv->nvec, sizeof( BV_TYPE ) ) ) ){
         return 0;
     }
     bv->vec = NULL;
