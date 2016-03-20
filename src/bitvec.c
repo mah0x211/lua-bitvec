@@ -111,22 +111,32 @@ static int index_lua( lua_State *L )
         case LUA_TNUMBER:
             pos = lua_tointeger( L, 2 );
             lua_pushboolean( L, bitvec_get( bv, pos ) == 1 );
-        break;
+            return 1;
 
         case LUA_TSTRING:
             str = lua_tolstring( L, 2, &len );
-            // ntz
-            if( len == 3 && str[0] == 'n' && str[1] == 't' && str[2] == 'z' ){
-                lua_pushinteger( L, bitvec_ntz( bv ) );
-                break;
+            switch( len )
+            {
+                // ntz
+                case 3:
+                    if( str[0] == 'n' && str[1] == 't' && str[2] == 'z' ){
+                        lua_pushinteger( L, bitvec_ntz( bv ) );
+                        return 1;
+                    }
+                // nbit
+                case 4:
+                    if( str[0] == 'n' && str[1] == 'b' && str[2] == 'i' &&
+                        str[3] == 't' ){
+                        lua_pushinteger( L, bv->nbit );
+                        return 1;
+                    }
             }
 
         // out-of-range
         default:
             lua_pushboolean( L, 0 );
+            return 1;
     }
-    
-    return 1;
 }
 
 
