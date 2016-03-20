@@ -103,14 +103,27 @@ static int index_lua( lua_State *L )
 {
     bitvec_t *bv = luaL_checkudata( L, 1, MODULE_MT );
     lua_Integer pos = 0;
-    
-    if( lua_type( L, 2 ) == LUA_TNUMBER ){
-        lua_Integer pos = lua_tointeger( L, 2 );
-        lua_pushboolean( L, bitvec_get( bv, pos ) == 1 );
-    }
-    // out-of-range
-    else {
-        lua_pushboolean( L, 0 );
+    size_t len = 0;
+    const char *str = NULL;
+
+    switch( lua_type( L, 2 ) )
+    {
+        case LUA_TNUMBER:
+            pos = lua_tointeger( L, 2 );
+            lua_pushboolean( L, bitvec_get( bv, pos ) == 1 );
+        break;
+
+        case LUA_TSTRING:
+            str = lua_tolstring( L, 2, &len );
+            // ntz
+            if( len == 3 && str[0] == 'n' && str[1] == 't' && str[2] == 'z' ){
+                lua_pushinteger( L, bitvec_ntz( bv ) );
+                break;
+            }
+
+        // out-of-range
+        default:
+            lua_pushboolean( L, 0 );
     }
     
     return 1;
