@@ -8,7 +8,6 @@ ifNotTrue( b[0] );
 b[0] = false;
 ifNotFalse( b[0] );
 
-
 -- set by number
 b[0] = 1;
 ifNotTrue( b[0] );
@@ -26,9 +25,18 @@ ifNotFalse( b[0] );
 
 -- autoresize
 b[128] = true;
+
 ifNotTrue( b[128] );
 b[128] = false;
 ifNotFalse( b[128] );
+
+
+-- number of trailing zeros
+ifNotEqual( b.ntz, 128 );
+b[96] = true;
+ifNotEqual( b.ntz, 96 );
+b[96] = false;
+ifNotEqual( b.ntz, 128 );
 
 
 
