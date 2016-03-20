@@ -1,6 +1,7 @@
 local bitvec = require('bitvec');
 -- default 64 bit
 local b = ifNil( bitvec.new() );
+ifNotEqual( b.nbit, 64 );
 
 -- set by boolean value
 b[0] = true;
@@ -25,10 +26,10 @@ ifNotFalse( b[0] );
 
 -- autoresize
 b[128] = true;
-
 ifNotTrue( b[128] );
 b[128] = false;
 ifNotFalse( b[128] );
+ifNotEqual( b.nbit, 128 );
 
 
 -- number of trailing zeros
