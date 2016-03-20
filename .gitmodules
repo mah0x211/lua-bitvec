@@ -1,0 +1,3 @@
+[submodule "deps/bitvec"]
+	path = deps/bitvec
+	url = https://github.com/mah0x211/bitvec.git

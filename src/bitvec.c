@@ -34,7 +34,7 @@
 #include <math.h>
 #include <lua.h>
 #include <lauxlib.h>
-#include "bitvec.h"
+#include "../deps/bitvec/bitvec.h"
 
 #define MODULE_MT   "bitvec"
 
