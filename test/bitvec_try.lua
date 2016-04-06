@@ -39,6 +39,15 @@ ifNotEqual( b.ntz, 96 );
 b[96] = false;
 ifNotEqual( b.ntz, 128 );
 
+-- find first zero
+ifNotEqual( b.ffz, 0 );
+for i = 0, 10 do
+    b[i] = true;
+    ifNotEqual( b.ffz, i + 1 );
+end
+for i = 0, 10 do
+    b[i] = false;
+end
 
 
 local function invalidFn()end
