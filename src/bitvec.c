@@ -123,6 +123,10 @@ static int index_lua( lua_State *L )
                         lua_pushinteger( L, bitvec_ntz( bv ) );
                         return 1;
                     }
+                    else if( str[0] == 'f' && str[1] == 'f' && str[2] == 'z' ){
+                        lua_pushinteger( L, bitvec_ffz( bv ) );
+                        return 1;
+                    }
                 // nbit
                 case 4:
                     if( str[0] == 'n' && str[1] == 'b' && str[2] == 'i' &&
