@@ -19,7 +19,16 @@ ifNotFalse( b:get( 128 ) );
 b:clear();
 
 
--- set bit range
+-- bit range
+b:setrange( 2, 10 )
+for i = 2, 10 do
+    ifNotTrue( b:get( i ) );
+end
+b:unsetrange( 2, 10 )
+for i = 2, 10 do
+    ifNotFalse( b:get( i ) );
+end
+
 b:setrange( 61, 121 )
 for i = 61, 121 do
     ifNotTrue( b:get( i ) )
@@ -47,7 +56,15 @@ b:clear();
 ifNotEqual( b:ffz(), 0 );
 b:set( 0 );
 ifNotEqual( b:ffz(), 1 );
+b:setrange( 2, 10 );
+ifNotEqual( b:ffz(), 1 )
+b:set( 1 );
+ifNotEqual( b:ffz(), 11 );
 
+b:clear();
+
+
+b:set( 0 );
 b:setrange( 2, 300 );
 ifNotEqual( b:ffz(), 1 );
 
