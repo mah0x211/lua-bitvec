@@ -128,8 +128,14 @@ end
 
 function BitVec:setrange( from, to )
     local vec = self.vec;
-    local fromidx = bitrshift( from, 5 );
-    local toidx = bitrshift( to, 5 );
+    local fromidx, toidx;
+
+    -- swap value
+    if from > to then
+        from, to = to, from;
+    end
+    fromidx = bitrshift( from, 5 );
+    toidx = bitrshift( to, 5 );
 
     if fromidx == toidx then
         local pos = bitlshift( 1, to % 32 );
@@ -138,17 +144,13 @@ function BitVec:setrange( from, to )
         if toidx > self.lastidx then
             self.nbit = ( toidx + 1 ) * 32;
             self.lastidx = toidx;
-            vec[toidx] = bitor( 0, pos );
-        else
-            vec[toidx] = bitor( vec[toidx], pos );
         end
+        -- vec[toidx] |= (~( 0xFFFFFFFE << ( to - from ) ) << from);
+        vec[toidx] = bitor(
+            vec[toidx] or 0,
+            bitlshift( bitnot( bitlshift( 0xFFFFFFFE, to - from ) ) , from )
+        );
     else
-        -- swap value
-        if fromidx > toidx then
-            from, to = to, from;
-            fromidx, toidx = toidx, fromidx;
-        end
-
         -- update attribtes
         if toidx > self.lastidx then
             self.nbit = ( toidx + 1 ) * 32;
@@ -198,10 +200,13 @@ function BitVec:unsetrange( from, to )
 
         if fromidx == toidx then
             if vec[toidx] and vec[toidx] ~= 0 then
-                -- vec[toidx] &= ~( 1 << ( to % 32 ) )
+                -- vec[start] &= ~(~( 0xFFFFFFFE << ( to - from ) ) << from);
                 vec[toidx] = bitand(
-                    vec[toidx] or 0,
-                    bitnot( bitlshift( 1, to % 32 ) )
+                    vec[toidx] or 0, bitnot(
+                        bitlshift(
+                            bitnot( bitlshift( 0xFFFFFFFE, to - from ) ), from
+                        )
+                    )
                 );
             end
         else
