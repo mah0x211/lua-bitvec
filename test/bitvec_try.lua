@@ -1,87 +1,75 @@
-local bitvec = require('bitvec');
--- default 64 bit
+local bitvec = require('../bitvec');
 local b = ifNil( bitvec.new() );
-ifNotEqual( b.nbit, 64 );
 
--- set by boolean value
-b[0] = true;
-ifNotTrue( b[0] );
-b[0] = false;
-ifNotFalse( b[0] );
+-- set bit
+b:set( 0 );
+ifNotTrue( b:get(0) );
+b:unset( 0 );
+ifNotFalse( b:get(0) );
 
--- set by number
-b[0] = 1;
-ifNotTrue( b[0] );
-b[0] = 0;
-ifNotFalse( b[0] );
-
-
--- set by floating-point number
--- floating-point number convert to integral number automatically in internal
-b[0] = 1.0;
-ifNotTrue( b[0] );
-b[0] = 0.9;
-ifNotFalse( b[0] );
-
+b:clear();
 
 -- autoresize
-b[128] = true;
-ifNotTrue( b[128] );
-b[128] = false;
-ifNotFalse( b[128] );
-ifNotEqual( b.nbit, 128 );
+b:set( 128 );
+ifNotTrue( b:get( 128 ) );
+
+b:unset( 128 );
+ifNotFalse( b:get( 128 ) );
+
+b:clear();
+
+
+-- set bit range
+b:setrange( 61, 121 )
+for i = 61, 121 do
+    ifNotTrue( b:get( i ) )
+end
+b:unsetrange( 61, 121 )
+for i = 61, 121 do
+    ifNotFalse( b:get( i ) )
+end
+
+b:clear();
 
 
 -- number of trailing zeros
-ifNotEqual( b.ntz, 128 );
-b[96] = true;
-ifNotEqual( b.ntz, 96 );
-b[96] = false;
-ifNotEqual( b.ntz, 128 );
+ifNotEqual( b:ntz(), 32 );
+b:set( 97 );
+ifNotEqual( b:ntz(), 97 );
+
+b:unset( 97 );
+ifNotEqual( b:ntz(), 128 );
+
+b:clear();
+
 
 -- find first zero
-ifNotEqual( b.ffz, 0 );
-for i = 0, 10 do
-    b[i] = true;
-    ifNotEqual( b.ffz, i + 1 );
-end
-for i = 0, 10 do
-    b[i] = false;
-end
+ifNotEqual( b:ffz(), 0 );
+b:set( 0 );
+ifNotEqual( b:ffz(), 1 );
 
+b:setrange( 2, 300 );
+ifNotEqual( b:ffz(), 1 );
 
-local function invalidFn()end
-local invalidCo = coroutine.create( invalidFn );
-local invalidTbl = {};
+b:set( 1 );
+ifNotEqual( b:ffz(), 301 );
 
+b:unsetrange( 128, 256 );
+ifNotEqual( b:ffz(), 128 );
 
--- set by invalid value
-b[0] = invalidFn;
-ifTrue( b[0] );
-b[0] = invalidCo;
-ifTrue( b[0] );
-b[0] = 'string';
-ifTrue( b[0] );
-b[0] = invalidTbl;
-ifTrue( b[0] );
-b[0] = b;
-ifTrue( b[0] );
+b:unsetrange( 191, 191 );
+ifNotEqual( b:ffz(), 128 );
 
+b:set( 128 );
+ifNotEqual( b:ffz(), 129 );
 
--- set at invalid index
-b[1.9] = true;
-ifTrue( b[-1] );
-b[-1] = true;
-ifTrue( b[-1] );
-b[-2.0] = true;
-ifTrue( b[-2.0] );
-b[invalidFn] = true;
-ifTrue( b[invalidFn] );
-b[invalidCo] = true;
-ifTrue( b[invalidCo] );
-b[invalidTbl] = true;
-ifTrue( b[invalidTbl] );
-b[b] = true;
-ifTrue( b[b] );
+b:setrange( 128, 198 );
+ifNotEqual( b:ffz(), 199 );
+
+b:setrange( 190, 301 );
+ifNotEqual( b:ffz(), 302 );
+
+b:unset( 78 );
+ifNotEqual( b:ffz(), 78 );
 
 
