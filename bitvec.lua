@@ -25,7 +25,6 @@
   Created by Masatoshi Teruya on 16/06/18.
 
 --]]
-local floor = math.floor;
 local bitor = require('bit').bor;
 local bitand = require('bit').band;
 local bitnot = require('bit').bnot;
@@ -138,8 +137,6 @@ function BitVec:setrange( from, to )
     toidx = bitrshift( to, 5 );
 
     if fromidx == toidx then
-        local pos = bitlshift( 1, to % 32 );
-
         -- update attribtes
         if toidx > self.lastidx then
             self.nbit = ( toidx + 1 ) * 32;
