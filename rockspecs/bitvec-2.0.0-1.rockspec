@@ -11,7 +11,8 @@ description = {
     maintainer = "Masatoshi Teruya"
 }
 dependencies = {
-    "lua >= 5.1"
+    "lua >= 5.1",
+    "luabitop >= 1.0.2"
 }
 build = {
     type = "builtin",
