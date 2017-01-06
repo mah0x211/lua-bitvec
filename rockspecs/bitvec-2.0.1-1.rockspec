@@ -1,7 +1,7 @@
 package = "bitvec"
 version = "2.0.1-1"
 source = {
-    url = "git://github.com/mah0x211/lua-bitvec.git",
+    url = "gitrec://github.com/mah0x211/lua-bitvec.git",
     tag = "v2.0.1"
 }
 description = {
