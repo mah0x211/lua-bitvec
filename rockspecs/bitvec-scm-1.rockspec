@@ -11,12 +11,16 @@ description = {
 }
 dependencies = {
     "lua >= 5.1",
-    "luabitop >= 1.0.2"
+    "luarocks-fetch-gitrec >= 0.2"
 }
 build = {
     type = "builtin",
     modules = {
-        bitvec = "bitvec.lua";
+        bitvec = {
+            sources = {
+                "src/bitvec.c",
+            }
+        }
     }
 }
 
