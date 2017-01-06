@@ -1,4 +1,4 @@
-local bitvec = require('../bitvec');
+local bitvec = require('bitvec');
 local b = ifNil( bitvec.new() );
 
 -- set bit
@@ -42,7 +42,7 @@ b:clear();
 
 
 -- number of trailing zeros
-ifNotEqual( b:ntz(), 32 );
+ifNotEqual( b:ntz(), 64 );
 b:set( 97 );
 ifNotEqual( b:ntz(), 97 );
 
