@@ -1,7 +1,7 @@
 package = "bitvec"
 version = "scm-1"
 source = {
-    url = "git://github.com/mah0x211/lua-bitvec.git"
+    url = "gitrec://github.com/mah0x211/lua-bitvec.git"
 }
 description = {
     summary = "bitvec module",
