@@ -218,11 +218,10 @@ static int tostring_lua( lua_State *L )
 
 static int new_lua( lua_State *L )
 {
-    bitvec_t *bv = NULL;
+    bitvec_t *bv = lua_newuserdata( L, sizeof( bitvec_t ) );
 
     // alloc new context
-    if( ( bv = lua_newuserdata( L, sizeof( bitvec_t ) ) ) &&
-        bitvec_init( bv, 0 ) == 0 ){
+    if( bitvec_init( bv, 0 ) == 0 ){
         lstate_setmetatable( L, MODULE_MT );
         return 1;
     }
