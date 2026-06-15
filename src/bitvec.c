@@ -26,15 +26,13 @@
  *
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <errno.h>
-#include <ctype.h>
-#include <math.h>
-#include <lua.h>
+// project
+#include "bitvec.h"
+// lua
 #include <lauxlib.h>
-#include "../deps/bitvec/bitvec.h"
+// system
+#include <errno.h>
+#include <string.h>
 
 #define MODULE_MT   "bitvec"
 
