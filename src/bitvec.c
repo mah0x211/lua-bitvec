@@ -90,11 +90,11 @@ static int unsetrange_lua( lua_State *L )
         to = from;
     }
 
-    if( to > bv->nbit ){
-        to = bv->nbit;
+    if( (size_t)to > bv->nbit ){
+        to = (lua_Integer)bv->nbit;
     }
 
-    if( from <= bv->nbit ){
+    if( (size_t)from <= bv->nbit ){
         bitvec_unset_range( bv, from, to );
     }
 
@@ -117,7 +117,7 @@ static int setrange_lua( lua_State *L )
     }
 
     // auto-resize
-    if( to <= bv->nbit || bitvec_resize( bv, to ) == 0 ){
+    if( (size_t)to <= bv->nbit || bitvec_resize( bv, to ) == 0 ){
         bitvec_set_range( bv, from, to );
         lua_pushboolean( L, 1 );
         return 1;
@@ -137,7 +137,7 @@ static int unset_lua( lua_State *L )
     lua_Integer pos = luaL_checkinteger( L, 2 );
 
     luaL_argcheck( L, pos >= 0, 2, "unsigned int expected, got signed int" );
-    if( pos <= bv->nbit ){
+    if( (size_t)pos <= bv->nbit ){
         bitvec_unset( bv, pos );
     }
 
@@ -152,7 +152,7 @@ static int set_lua( lua_State *L )
 
     luaL_argcheck( L, pos >= 0, 2, "unsigned int expected, got signed int" );
     // auto-resize
-    if( pos <= bv->nbit || bitvec_resize( bv, bv->nbit + BV_BIT ) == 0 ){
+    if( (size_t)pos <= bv->nbit || bitvec_resize( bv, bv->nbit + BV_BIT ) == 0 ){
         bitvec_set( bv, pos );
         lua_pushboolean( L, 1 );
         return 1;
